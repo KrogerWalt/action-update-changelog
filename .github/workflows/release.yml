@@ -44,8 +44,10 @@ jobs:
           ticket_url_prefix: https://github.com/${{ github.repository }}/issues/
           version: ${{ steps.bump-semver.outputs.new_version }}
 
-      - name: print-changedlog
-        run: cat CHANGELOG.md
+#      - name: print-changedlog
+#        run: cat CHANGELOG.md
+
+      - run: echo "${{ steps.changelog-update.outputs.change_md }}"
 
       - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match
