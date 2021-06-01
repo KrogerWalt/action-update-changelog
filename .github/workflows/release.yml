@@ -34,7 +34,7 @@ jobs:
           current_version: ${{ steps.get-latest-tag.outputs.tag }}
           level: ${{ steps.release-label.outputs.level }}
 
-      - uses: KrogerWalt/action-update-changelog@v1
+      - uses: KrogerWalt/action-update-changelog@main
         id: changelog-update
         if: ${{ github.event.pull_request.merged == true }}
         with:
