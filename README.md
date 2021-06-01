@@ -5,43 +5,45 @@
 [![license][license-badge]][license]
 
 
-This is a GitHub Action to update a changelog file based on git commits. 
-`major`, `minor`, `patch` from a pull request *release label*.
+This is a GitHub Action to update a changelog file based on git commits. If one is not found, a blank one will be
+created based on this [template](https://keepachangelog.com/en/1.0.0/) and updated going forward. 
+The action will NOT attempt to create a complete changelog based on previous commits.
 
-For example, if a pull request has the label `release/minor`, this action outputs `minor` as level.
+The action assumes you use semver and a ticketing system, and that you format branch names according to 
+`TICKET-ID/ChangeType/Description_of_change`.
 
-It would be more useful to use this with other GitHub Actions' outputs.
-It's recommended to use this with [actions-ecosystem/action-bump-semver](https://github.com/actions-ecosystem/action-bump-semver) and [actions-ecosystem/action-push-tag](https://github.com/actions-ecosystem/action-push-tag).
+For example, if a pull request being merged has the branch `PROJ-1234/Added/Update_profile_picture`, this action
+will update the changelog to have a new entry like:
 
-This action supports `pull_request` and `push` events.
+## [v1.7.2] - 2021-05-27
+### Added
+- Update profile picture
 
-## Prerequisites
+### Referenced Issues
+- [PROJ-1234](https://jira.yourcompany.com/jira/browse/PROJ-1234)
 
-It's necessary to create labels with the `inputs.label_prefix` prefix and the `major`, `minor`, `patch` suffix before getting started with this action.
-
-By default, they're `release/major`, `release/minor`, and `release/patch`.
 
 ## Inputs
 
-|      NAME      |                                                                         DESCRIPTION                                                                         |   TYPE   | REQUIRED |  DEFAULT   |
-| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------- | ---------- |
-| `label_prefix` | A prefix for labels that indicate semver level {`major`, `minor`, `patch`}.                                                                                 | `string` | `false`  | `release/` |
-| `labels`       | The list of labels for the pull request. Separated with line breaks if there're multiple labels. Required for `push` events, not for `pull_request` events. | `string` | `false`  | `N/A`      |
+|         NAME        |                                                                         DESCRIPTION                                                                      |   TYPE   | REQUIRED |   DEFAULT    |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------- | ------------ |
+| `changelog_file`    | Overrides the path to the changelog. Default is ./CHANGELOG.md                                                                                           | `string` | `false`  | CHANGELOG.md |
+| `ticket_url_prefix` | If provided, will be used to create a link for referenced issues. (Make sure to include ending slash if needed. This allows ticket to be param as well.) | `string` | `false`  | `N/A`        |
+| `version`           | The version of the release will be added above this and the other unreleased changes. If not supplied this change will be added to unreleased changes.   | `string` | `false`  | `N/A`        |
 
-It would be easy to prepare `inputs.labels` with [actions-ecosystem/action-get-merged-pull-request](https://github.com//actions-ecosystem/action-get-merged-pull-request).
 
 ## Outputs
 
-|  NAME   |                  DESCRIPTION                   |   TYPE   |
-|---------|------------------------------------------------|----------|
-| `level` | A semver update level `{major, minor, patch}`. | `string` |
+|    NAME     |                  DESCRIPTION                     |   TYPE   |
+|-------------|--------------------------------------------------|----------|
+| `change_md` | The Markdown that was generated for this change. | `string` |
 
 ## Example
 
 ### Simple
 
 ```yaml
-name: Push a new tag with Pull Request
+name: Update Changelog
 
 on:
   pull_request:
@@ -52,46 +54,43 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with: 
+          fetch-depth: 0
 
-      - uses: actions-ecosystem/action-release-label@v1
-        id: release-label
-        if: ${{ github.event.pull_request.merged == true }}
-
-      - uses: actions-ecosystem/action-get-latest-tag@v1
+      - uses: KrogerWalt/action-get-latest-tag@v2
         id: get-latest-tag
-        if: ${{ steps.release-label.outputs.level != null }}
 
       - uses: actions-ecosystem/action-bump-semver@v1
         id: bump-semver
         if: ${{ steps.release-label.outputs.level != null }}
         with:
           current_version: ${{ steps.get-latest-tag.outputs.tag }}
-          level: ${{ steps.release-label.outputs.level }}
-
-      - uses: actions-ecosystem/action-push-tag@v1
-        if: ${{ steps.release-label.outputs.level != null }}
+          level: ${{ steps.release-label.outputs.level || 'patch' }}
+        
+      - uses: KrogerWalt/action-update-changelog@v1
+        id: changelog-update
+        if: ${{ github.event.pull_request.merged == true }}
         with:
-          tag: ${{ steps.bump-semver.outputs.new_version }}
-          message: '${{ steps.bump-semver.outputs.new_version }}: PR #${{ github.event.pull_request.number }} ${{ github.event.pull_request.title }}'
+          ticket_url_prefix: https://jira.yourcompany.com/jira/browse/
+          version: ${{ steps.bump-semver.outputs.new_version }}
+
+      - name: Push Changelog to git
+      ...
 ```
-
-## Note
-
-This action is inspired by [haya14busa/action-bumpr](https://github.com/haya14busa/action-bumpr).
 
 ## License
 
-Copyright 2020 The Actions Ecosystem Authors.
+Copyright 2021 KrogerWalt.
 
 Action Release Label is released under the [Apache License 2.0](./LICENSE).
 
 <!-- badge links -->
 
-[actions-workflow-lint]: https://github.com/actions-ecosystem/action-release-label/actions?query=workflow%3ALint
-[actions-workflow-lint-badge]: https://img.shields.io/github/workflow/status/actions-ecosystem/action-release-label/Lint?label=Lint&style=for-the-badge&logo=github
+[actions-workflow-lint]: https://github.com/KrogerWalt/action-update-changelog/actions?query=workflow%3ALint
+[actions-workflow-lint-badge]: https://img.shields.io/github/workflow/status/KrogerWalt/action-update-changelog/Lint?label=Lint&style=for-the-badge&logo=github
 
-[release]: https://github.com/actions-ecosystem/action-release-label/releases
-[release-badge]: https://img.shields.io/github/v/release/actions-ecosystem/action-release-label?style=for-the-badge&logo=github
+[release]: https://github.com/KrogerWalt/action-update-changelog/releases
+[release-badge]: https://img.shields.io/github/v/release/KrogerWalt/action-update-changelog?style=for-the-badge&logo=github
 
 [license]: LICENSE
-[license-badge]: https://img.shields.io/github/license/actions-ecosystem/action-add-labels?style=for-the-badge
+[license-badge]: https://img.shields.io/github/license/KrogerWalt/action-update-changelog?style=for-the-badge

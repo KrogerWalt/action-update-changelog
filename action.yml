@@ -2,19 +2,22 @@ name: Action Update Changelog
 description: Updates changelog based on git commits
 author: KrogerWalt
 inputs:
-  label_prefix:
-    description: A prefix for labels that indicate semver level ({major, minor, patch}).
+  changelog_file:
+    description: Overrides the path to the changelog.
     required: false
-    default: "release/"
-  labels:
-    description: The list of labels for the pull request. Separated with line breaks if there're multiple labels. Required for push events, not for pull_request events.
+    default: "CHANGELOG.md"
+  ticket_url_prefix:
+    description: If provided, will be used to create a link for referenced issues.
+    required: false
+  version:
+    description: The version of the release will be added above this and the other unreleased changes. If not supplied this change will be added to unreleased changes.
     required: false
 outputs:
-  level:
-    description: A semver update level ({major, minor, patch}).
+  change_md:
+    description: The Markdown that was generated for this change.
 runs:
   using: docker
   image: Dockerfile
 branding:
-  icon: paperclip
-  color: blue
+  icon: list
+  color: purple
