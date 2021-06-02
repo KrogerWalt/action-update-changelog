@@ -12,14 +12,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Referenced Issues
 - [14](https://github.com/KrogerWalt/action-update-changelog/issues/14)
 
-
-## [v1.0.5] - 2021-06-02
-###
-- Merged ""
-### Referenced Issues
-- [main](https://github.com/KrogerWalt/action-update-changelog/issues/main)
-
-
 ## [v0.0.0] - 2021-06-02
 ### Added
 - Merged "Changelog updater"
