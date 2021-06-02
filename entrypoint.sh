@@ -31,6 +31,8 @@ change_md="## [${version}] - ${fullDate}
 
 # Check if file exists, if not, create blank template.
 if [ -e "${changelogPath}" ]; then
+  echo "File exists, appending..."
+else
   echo "# Changelog
 All notable changes to this project will be documented in this file.
 
