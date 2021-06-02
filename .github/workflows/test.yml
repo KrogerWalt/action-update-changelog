@@ -27,5 +27,3 @@ jobs:
 
       - name: print-changedlog
         run: cat CHANGELOG.md
-
-      - run: echo "${{ steps.changelog-update.outputs.change_md }}"
