@@ -8,9 +8,6 @@ urlPrefix=${INPUT_TICKET_URL_PREFIX}
 version=${INPUT_VERSION}
 fullDate=$(date +"%F")
 branchName=${INPUT_BRANCH_NAME}
-ticket=$(echo ${branchName} | awk -F'/' '{print($1)}')
-changeType=$(echo ${branchName} | awk -F'/' '{print($2)}')
-message=$(echo ${branchName} | awk -F'/' '{print($3)}' | tr '_' ' ')
 
 ticketLine="- ${ticket}"
 
@@ -21,6 +18,15 @@ fi
 
 if [[ -z ${branchName} ]]; then
   branchName=$(git rev-parse --abbrev-ref HEAD)
+fi
+echo "Using branch name: ${branchName}"
+
+ticket=$(echo ${branchName} | awk -F'/' '{print($1)}')
+changeType=$(echo ${branchName} | awk -F'/' '{print($2)}')
+message=$(echo ${branchName} | awk -F'/' '{print($3)}' | tr '_' ' ')
+
+if [[ -z ${changeType} || -z ${message} ]]; then
+  echo "Could not parse branchName: ${branchName}"
 fi
 
 if [[ -n ${urlPrefix} ]]; then
