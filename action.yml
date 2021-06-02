@@ -13,8 +13,8 @@ inputs:
     description: If provided, will be used to create a link for referenced issues.
     required: false
   version:
-    description: The version of the release will be added above this and the other unreleased changes. If not supplied this change will be added to unreleased changes.
-    required: false
+    description: The version of the release will be added above this change.
+    required: true
 outputs:
   change_md:
     description: The Markdown that was generated for this change.
