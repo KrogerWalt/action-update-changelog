@@ -24,10 +24,10 @@ if [[ -n ${urlPrefix} ]]; then
 fi
 
 change_md="## [${version}] - ${fullDate}
-            ### ${changeType}
-            - Merged \"${message}\"
-            ### Referenced Issues
-            ${ticketLine}"
+### ${changeType}
+- Merged \"${message}\"
+### Referenced Issues
+${ticketLine}"
 
 # Check if file exists, if not, create blank template.
 if [ -e "${changelogPath}" ]; then
