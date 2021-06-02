@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v1.1.0] - 2021-06-02
+### Changed
+- Merged "use v2 tag instead of semver"
+### Referenced Issues
+- [14](https://github.com/KrogerWalt/action-update-changelog/issues/14)
+
+
 ## [v1.0.6] - 2021-06-02
 ### Changed
 - Merged "update version number of action"
