@@ -29,6 +29,7 @@ message=$(echo ${branchName} | awk -F'/' '{print($3)}' | tr '_' ' ')
 
 if [[ -z ${message} ]]; then
   echo "Could not parse branchName: ${branchName}"
+  exit 1
 fi
 
 if [[ -n ${urlPrefix} ]]; then
