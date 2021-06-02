@@ -35,6 +35,7 @@ jobs:
         id: changelog-update
         with:
           ticket_url_prefix: https://github.com/${{ github.repository }}/issues/
+          branch_name: ${{ steps.get-merged-pull-request.outputs.head.ref }}
           version: ${{ steps.bump-semver.outputs.new_version }}
 
       - name: Commit Changelog
