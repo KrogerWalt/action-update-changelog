@@ -47,10 +47,10 @@ fi
 
 #Read template and insert data to create temp file
 while read data; do
-  if [ "${data}" -e "## [Unreleased]"]; then
-    echo "${data} \
-\
-${change_md} \
+  if [ "${data}" == "## [Unreleased]"]; then
+    echo "${data}
+
+${change_md}
 " >> ${tmpFilePath}
   else
     echo $data >> ${tmpFilePath}
