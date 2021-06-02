@@ -16,6 +16,8 @@ if [[ -z ${version}  ]]; then
   exit 1
 fi
 
+echo "branchName passed in value: ${branchName}"
+
 if [[ -z ${branchName} ]]; then
   branchName=$(git rev-parse --abbrev-ref HEAD)
 fi
@@ -25,7 +27,7 @@ ticket=$(echo ${branchName} | awk -F'/' '{print($1)}')
 changeType=$(echo ${branchName} | awk -F'/' '{print($2)}')
 message=$(echo ${branchName} | awk -F'/' '{print($3)}' | tr '_' ' ')
 
-if [[ -z ${changeType} || -z ${message} ]]; then
+if [[ -z ${message} ]]; then
   echo "Could not parse branchName: ${branchName}"
 fi
 
