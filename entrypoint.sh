@@ -14,17 +14,16 @@ message=$(echo ${branchName} | awk -F'/' '{print($3)}' | tr '_' ' ')
 
 ticketLine="- ${ticket}"
 
-echo "${version}"
-#if [ -n "${version}" ]; then
-#  echo "Staging changes functionality isn't finished yet."
-#  exit 1
-#fi
+if [ -n ${version} ]; then
+  echo "Staging changes functionality isn't finished yet."
+  exit 1
+fi
 
-if [ -n "${urlPrefix}" ]; then
+if [ -n ${urlPrefix} ]; then
   ticketLine="- [${ticket}](${urlPrefix}${ticket})"
 fi
 
-change_md = "## [${version}] - ${fullDate}
+change_md="## [${version}] - ${fullDate}
             ### ${changeType}
             - Merged \"${message}\"
             ### Referenced Issues
