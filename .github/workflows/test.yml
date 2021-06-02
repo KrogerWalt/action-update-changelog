@@ -12,24 +12,23 @@ jobs:
 
       - uses: KrogerWalt/action-get-latest-tag@v2
         id: get-latest-tag
-        if: ${{ steps.release-label.outputs.level != null }}
 
       - uses: actions-ecosystem/action-bump-semver@v1
         id: bump-semver
-        if: ${{ steps.release-label.outputs.level != null }}
         with:
           current_version: ${{ steps.get-latest-tag.outputs.tag }}
-          level: ${{ steps.release-label.outputs.level }}
+          level: 'patch'
 
       #      - name: print-changelog
       #        run: cat CHANGELOG.md
 
       - uses: KrogerWalt/action-update-changelog@main
         id: changelog-update
-        if: ${{ github.event.pull_request.merged == true }}
         with:
           ticket_url_prefix: https://github.com/${{ github.repository }}/issues/
-          version: ${{ steps.bump-semver.outputs.new_version }}
+          version: ${{ steps.get-latest-tag.outputs.tag }}
 
-      - name: print-changedlog
-        run: cat CHANGELOG.md
+#      - name: print-changedlog
+#        run: cat CHANGELOG.md
+
+      - run: echo "${{ steps.changelog-update.outputs.change_md }}"
