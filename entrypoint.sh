@@ -27,7 +27,7 @@ ticket=$(echo ${branchName} | awk -F'/' '{print($1)}')
 changeType=$(echo ${branchName} | awk -F'/' '{print($2)}')
 message=$(echo ${branchName} | awk -F'/' '{print($3)}' | tr '_' ' ')
 
-if [[ -z ${changeType} || -z ${message} ]]; then
+if [[ -z ${message} ]]; then
   echo "Could not parse branchName: ${branchName}"
 fi
 
