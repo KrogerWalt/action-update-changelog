@@ -15,10 +15,10 @@ message=$(echo ${branchName} | awk -F'/' '{print($3)}' | tr '_' ' ')
 ticketLine="- ${ticket}"
 
 echo "${version}"
-if [ -n "${version}" ]; then
-  echo "Staging changes functionality isn't finished yet."
-  exit 1
-fi
+#if [ -n "${version}" ]; then
+#  echo "Staging changes functionality isn't finished yet."
+#  exit 1
+#fi
 
 if [ -n "${urlPrefix}" ]; then
   ticketLine="- [${ticket}](${urlPrefix}${ticket})"
