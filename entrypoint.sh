@@ -14,7 +14,7 @@ message=$(echo ${branchName} | awk -F'/' '{print($3)}' | tr '_' ' ')
 
 ticketLine="- ${ticket}"
 
-if [[ -n ${version}  ]]; then
+if [[ -z ${version}  ]]; then
   echo "Staging changes functionality isn't finished yet."
   exit 1
 fi
