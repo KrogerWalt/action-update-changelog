@@ -1,0 +1,39 @@
+name: On PR Merge
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+jobs:
+  Update-Changelog:
+    if: ${{ github.event.pull_request.merged }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: KrogerWalt/action-get-latest-tag@v2
+        id: get-latest-tag
+
+      - uses: KrogerWalt/action-update-changelog@main
+        id: changelog-update
+        with:
+          branch_name: ${{ github.event.pull_request.head.ref }}
+          ticket_url_prefix: https://github.com/${{ github.repository }}/issues/
+          version: ${{ steps.get-latest-tag.outputs.tag }}
+
+      - name: Commit Changelog
+        run: |
+          git config --global --replace-all user.name "$GITHUB_ACTOR"
+          git config --global --replace-all user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git push origin main
+
+      - name: Enable "include administrators" branch protection
+        uses: benjefferies/branch-protection-bot@master
+        if: ${{ steps.version-label.outputs.level != null && (cancelled() || failure() || success()) }} # Force to always run this step to ensure "include administrators" is always turned back on
+        with:
+          access-token: ${{ secrets.ADMIN_PAT }}
+          enforce_admins: true
+          branch: main
+

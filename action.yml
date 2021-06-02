@@ -6,6 +6,9 @@ inputs:
     description: Overrides the path to the changelog.
     required: false
     default: "CHANGELOG.md"
+  branch_name:
+    description: If provided, will be used instead of current branch name to create message.
+    required: false
   ticket_url_prefix:
     description: If provided, will be used to create a link for referenced issues.
     required: false
