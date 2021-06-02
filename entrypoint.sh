@@ -16,6 +16,8 @@ if [[ -z ${version}  ]]; then
   exit 1
 fi
 
+echo "branchName passed in value: ${branchName}"
+
 if [[ -z ${branchName} ]]; then
   branchName=$(git rev-parse --abbrev-ref HEAD)
 fi
