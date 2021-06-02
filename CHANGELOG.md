@@ -6,8 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [v1.0.3] - 2021-06-02
+## [v1.0.4] - 2021-06-02
 ### 
+- Merged ""
+### Referenced Issues
+- [main](https://github.com/KrogerWalt/action-update-changelog/issues/main)
+
+
+## [v1.0.3] - 2021-06-02
+###
 - Merged ""
 ### Referenced Issues
 - [main](https://github.com/KrogerWalt/action-update-changelog/issues/main)
