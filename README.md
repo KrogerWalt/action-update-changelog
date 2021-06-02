@@ -30,7 +30,7 @@ will update the changelog to have a new entry like:
 | `branch_name`       | Overrides the branch name to parse for the message. Default is name of current branch.                                                                   | `string` | `false`  | `current branch` |
 | `changelog_file`    | Overrides the path to the changelog. Default is ./CHANGELOG.md                                                                                           | `string` | `false`  | CHANGELOG.md     |
 | `ticket_url_prefix` | If provided, will be used to create a link for referenced issues. (Make sure to include ending slash if needed. This allows ticket to be param as well.) | `string` | `false`  | `N/A`            |
-| `version`           | The version of the release will be added above this and the other unreleased changes. If not supplied this change will be added to unreleased changes.   | `string` | `false`  | `N/A`            |
+| `version`           | The version of the release will be added above this change.                                                                                              | `string` | `true`   | `N/A`            |
 
 
 ## Outputs

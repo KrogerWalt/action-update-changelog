@@ -33,13 +33,17 @@ jobs:
 
       - uses: KrogerWalt/action-update-changelog@main
         id: changelog-update
-        if: ${{ github.event.pull_request.merged == true }}
         with:
           ticket_url_prefix: https://github.com/${{ github.repository }}/issues/
           version: ${{ steps.bump-semver.outputs.new_version }}
 
-      - name: print-changelog
-        run: cat CHANGELOG.md
+      - name: Commit Changelog
+        run: |
+          git config --global --replace-all user.name "$GITHUB_ACTOR"
+          git config --global --replace-all user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git add CHANGELOG.md
+          git commit -m "Updating Changelog"
+          git push origin main
 
       - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match
