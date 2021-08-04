@@ -27,6 +27,13 @@ ticket=$(echo ${branchName} | awk -F'/' '{print($1)}')
 changeType=$(echo ${branchName} | awk -F'/' '{print($2)}')
 message=$(echo ${branchName} | awk -F'/' '{print($3)}' | tr '_' ' ')
 
+if [[ "${changeType}" =~ ^(Added|Changed|Deprecated|Removed|Fixed|Security)$ ]]; then
+    echo "ChangeType: ${changeType}"
+else
+  echo "Invalid ChangeType: ${changeType}"
+  exit 1
+fi
+
 if [[ -z ${message} ]]; then
   echo "Could not parse branchName: ${branchName}"
   exit 1
