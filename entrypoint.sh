@@ -27,7 +27,7 @@ ticket=$(echo ${branchName} | awk -F'/' '{print($1)}')
 changeType=$(echo ${branchName} | awk -F'/' '{print($2)}')
 message=$(echo ${branchName} | awk -F'/' '{print($3)}' | tr '_' ' ')
 
-if changeType | grep -Eq '(Added|Changed|Deprecated|Removed|Fixed|Security)'; then
+if echo ${changeType} | grep -Eq '(Added|Changed|Deprecated|Removed|Fixed|Security)'; then
     echo "ChangeType: ${changeType}"
 else
   echo "Invalid ChangeType: ${changeType}"
@@ -40,7 +40,10 @@ if [[ -z ${message} ]]; then
 fi
 
 if [[ -n ${urlPrefix} ]]; then
-  ticketLine="- [${ticket}](${urlPrefix}${ticket})"
+  case "${ticket}" in
+    NOJIRA|NoJira|HOTFIX|Hotfix) ;;
+    *) ticketLine="- [${ticket}](${urlPrefix}${ticket})"
+  esac
 fi
 
 change_md="## [${version}] - ${fullDate}
