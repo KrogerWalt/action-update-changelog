@@ -9,8 +9,6 @@ version=${INPUT_VERSION}
 fullDate=$(date +"%F")
 branchName=${INPUT_BRANCH_NAME}
 
-ticketLine="- ${ticket}"
-
 if [[ -z ${version}  ]]; then
   echo "Staging changes functionality isn't finished yet."
   exit 1
@@ -38,6 +36,8 @@ if [[ -z ${message} ]]; then
   echo "Could not parse branchName: ${branchName}"
   exit 1
 fi
+
+ticketLine="- ${ticket}"
 
 if [[ -n ${urlPrefix} ]]; then
   case "${ticket}" in
