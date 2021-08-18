@@ -37,13 +37,15 @@ if [[ -z ${message} ]]; then
   exit 1
 fi
 
-ticketLine="- ${ticket}"
+ticketLine=""
 
 if [[ -n ${urlPrefix} ]]; then
   case "${ticket}" in
     NOJIRA|NoJira|HOTFIX|Hotfix) ;;
     *) ticketLine="- [${ticket}](${urlPrefix}${ticket})"
   esac
+else
+  ticketLine="- ${ticket}"
 fi
 
 change_md="## [${version}] - ${fullDate}
