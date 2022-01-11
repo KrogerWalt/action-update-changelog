@@ -10,35 +10,35 @@ fullDate=$(date +"%F")
 branchName=${INPUT_BRANCH_NAME}
 change_md=""
 
-if [[ -z ${version}  ]]; then
+if [ -z ${version}  ]; then
   echo "Adding changes to Unreleased Section."
 
   echo "branchName passed in value: ${branchName}"
 
-  if [[ -z ${branchName} ]]; then
+  if [ -z ${branchName} ]; then
     branchName=$(git rev-parse --abbrev-ref HEAD)
   fi
   echo "Using branch name: ${branchName}"
 
-  ticket=$(echo ${branchName} | awk -F'/' '{print($1)}')
-  changeType=$(echo ${branchName} | awk -F'/' '{print($2)}')
-  message=$(echo ${branchName} | awk -F'/' '{print($3)}' | tr '_' ' ')
+  ticket=$(echo "${branchName}" | awk -F'/' '{print($1)}')
+  changeType=$(echo "${branchName}" | awk -F'/' '{print($2)}')
+  message=$(echo "${branchName}" | awk -F'/' '{print($3)}' | tr '_' ' ')
 
-  if echo ${changeType} | grep -Eq '(Added|Changed|Deprecated|Removed|Fixed|Security)'; then
+  if echo "${changeType}" | grep -Eq '(Added|Changed|Deprecated|Removed|Fixed|Security)'; then
       echo "ChangeType: ${changeType}"
   else
     echo "Invalid ChangeType: ${changeType}"
     exit 1
   fi
 
-  if [[ -z ${message} ]]; then
+  if [ -z "${message}" ]; then
     echo "Could not parse branchName: ${branchName}"
     exit 1
   fi
 
   ticketLine=""
 
-  if [[ -n ${urlPrefix} ]]; then
+  if [ -n ${urlPrefix} ]; then
     case "${ticket}" in
       NOJIRA|NoJira|HOTFIX|Hotfix) ;;
       *) ticketLine="- [${ticket}](${urlPrefix}${ticket})"
@@ -79,13 +79,13 @@ ${ticketLine}"
     if [ "${data}" = "## [Unreleased]" ]; then
       echo "Entering Unreleased section..."
       export inUnreleasedSection="true"
-      echo $data >> ${tmpFilePath}
+      echo "$data" >> "${tmpFilePath}"
     elif [ "${data:0:4}" = "## [" ]; then
       if [ "${inUnreleasedSection}" = "true" ]; then
         echo "Leaving Unreleased section..."
       fi
       export inUnreleasedSection="false"
-      echo $data >> ${tmpFilePath}
+      echo "$data" >> "${tmpFilePath}"
     elif [ "${inUnreleasedSection}" = "true" ] && [ "${data}" = "### ${changeType}" ]; then
       echo "Adding data to ${changeType} section..."
       export changeTypeFound="true"
@@ -96,9 +96,9 @@ ${ticketLine}"
       export seekingReferencedIssuesSection="false"
       echo "Adding referenced issue..."
       echo "${data}
-${ticketLine}" >> ${tmpFilePath}
+${ticketLine}" >> "${tmpFilePath}"
     else
-      echo $data >> ${tmpFilePath}
+      echo "$data" >> "${tmpFilePath}"
     fi
   done < "${changelogPath}"
 
@@ -110,9 +110,9 @@ ${ticketLine}" >> ${tmpFilePath}
       if [ "${data}" = "## [Unreleased]" ]; then
         echo "Adding ${changeType} section to Unreleased..."
         echo "${data}
-${change_md}" >> ${tmpFilePath}
+${change_md}" >> "${tmpFilePath}"
       else
-        echo $data >> ${tmpFilePath}
+        echo "$data" >> "${tmpFilePath}"
       fi
     done < "${changelogPath}"
   fi
@@ -129,7 +129,7 @@ else
 
 ${change_md}" >> ${tmpFilePath}
     else
-      echo $data >> ${tmpFilePath}
+      echo "$data" >> ${tmpFilePath}
     fi
   done < "${changelogPath}"
 fi
