@@ -22,7 +22,7 @@ jobs:
         with:
           labels: ${{ steps.get-merged-pull-request.outputs.labels }}
 
-      - uses: KrogerWalt/action-get-latest-tag@v2
+      - uses: KrogerWalt/action-get-latest-tag@main
         id: get-latest-tag
 
       - uses: actions-ecosystem/action-bump-semver@v1
