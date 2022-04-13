@@ -58,7 +58,7 @@ jobs:
         with: 
           fetch-depth: 0
 
-      - uses: KrogerWalt/action-get-latest-tag@v2
+      - uses: KrogerWalt/action-get-latest-tag@v3
         id: get-latest-tag
 
       - uses: actions-ecosystem/action-bump-semver@v1
