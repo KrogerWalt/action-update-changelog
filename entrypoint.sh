@@ -142,4 +142,4 @@ echo "Replacing original file with temp file."
 rm "${changelogPath}"
 mv "${tmpFilePath}" "${changelogPath}"
 
-echo "::set-output name=change_md::${change_md}"
+echo "change_md=${change_md}" >> $GITHUB_OUTPUT
